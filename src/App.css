@@ -27,8 +27,24 @@
 .App-link {
   color: #61dafb;
 }
+
 .bs-button{
   margin-inline: 0.25rem;
+}
+
+.carta{
+  margin: 2rem auto 3rem;
+}
+
+.form-wrapper{
+  padding-inline: 10rem;
+}
+
+label{
+  font-size: 1.3rem;
+}
+input{
+  text-align: center;
 }
 
 @keyframes App-logo-spin {
