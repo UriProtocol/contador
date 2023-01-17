@@ -1,10 +1,11 @@
-import { useState } from "react"
+ import { useState } from "react"
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import {v4 as uuid} from 'uuid'
 
 const Cartas = () =>{
 
@@ -15,10 +16,18 @@ const Cartas = () =>{
         'telefono': ''
     }
     const [datos, setDatos] = useState(initialState)
+    const {nombre, direccion, telefono} = datos
 
     const handleSubmit = event =>{
-        alert('Voce quiere tener um miembro mas grande? Haga clicke aqui')
+        event.preventDefault()
     }
+    const handleChange = e =>{
+        setDatos({
+            ...datos, [e.target.name]:e.target.value 
+        })
+        console.log(datos)
+    }
+
     return (
         <Container>
             <Row>
@@ -40,15 +49,15 @@ const Cartas = () =>{
                 <Form onSubmit={ handleSubmit }>
                     <Form.Group className="mb-3" controlId="nombre">
                         <Form.Label>Ingresa tu nombre: </Form.Label>
-                        <Form.Control type="email" placeholder="Ingresa tu nombre" name="nombre"/>
+                        <Form.Control type="text" placeholder="Ingresa tu nombre" name="nombre" value={nombre} onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="direccion">
                         <Form.Label>Ingresa tu dirección: </Form.Label>
-                        <Form.Control type="email" placeholder="Ingresa tu direccion" name="direccion"/>
+                        <Form.Control type="text" placeholder="Ingresa tu direccion" name="direccion" value={direccion} onChange={handleChange}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="telefono">
                         <Form.Label>Ingresa tu telefono: </Form.Label>
-                        <Form.Control type="email" placeholder="Ingresa tu telefono" name="telefono"/>
+                        <Form.Control type="tel" placeholder="Ingresa tu telefono" name="telefono" value={telefono} onChange={handleChange}/>
                     </Form.Group>
                     <Button variant="primary" type="submit">Submit</Button>
                 </Form>
