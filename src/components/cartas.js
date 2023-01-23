@@ -17,32 +17,56 @@ const Cartas = () =>{
     }
     const [datos, setDatos] = useState(initialState)
     const {nombre, direccion, telefono} = datos
+    const [informacion, setInformacion] = useState([])
 
     const handleSubmit = event =>{
         event.preventDefault()
+        const initialState2 = {
+            'id': uuid(),
+            'nombre': datos.nombre,
+            'direccion': datos.direccion,
+            'telefono': datos.telefono
+        }
+        let inf = informacion
+        inf.push(initialState2)
+        setInformacion(inf)
+        setDatos(initialState)
+        console.log(informacion)
     }
     const handleChange = e =>{
         setDatos({
             ...datos, [e.target.name]:e.target.value 
         })
-        console.log(datos)
+        // console.log(datos)
+    }
+    const handleModificar = e =>{
+        const id = e.target.name.slice(1, -1)
+        console.log(id)
+    }
+    const handleEliminar = e =>{
+        const id = e.target.name.slice(1, -1)
+        console.log(id)
     }
 
     return (
         <Container>
-            <Row>
-                <Col>
-                    <Card style={{ width: '18rem' }} className="carta">
-                        <Card.Body>
-                            <Card.Title>Card Title</Card.Title>
-                            <Card.Text>
-                            Some quick example text to build on the card title and make up the
-                            bulk of the card's content.
-                            </Card.Text>
-                            <Button variant="success">Go somewhere</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>  
+            <Row className="row-cols-3">
+                {
+                    informacion.map(inf => (
+                        <Col key={inf.id} className="mt-4">
+                            <Card style={{ width: '18rem' }} >
+                                <Card.Body>
+                                    <Card.Title>{inf.nombre}</Card.Title>
+                                    <Card.Text>ID: {inf.id}</Card.Text>
+                                    <Card.Text>Dirección: {inf.direccion}</Card.Text>
+                                    <Card.Text>Teléfono: {inf.telefono}</Card.Text>
+                                    <Button name={'m' + inf.id} variant="info" className="me-2" onClick={handleModificar}>Modificar</Button>
+                                    <Button name={'e' + inf.id} variant="danger" className="ms-2" onClick={handleEliminar}>Eliminar</Button>
+
+                                </Card.Body>
+                            </Card>
+                        </Col> ))
+                }
             </Row>
 
             <Row className="form-wrapper">
@@ -59,7 +83,7 @@ const Cartas = () =>{
                         <Form.Label>Ingresa tu telefono: </Form.Label>
                         <Form.Control type="tel" placeholder="Ingresa tu telefono" name="telefono" value={telefono} onChange={handleChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit">Submit</Button>
+                    <Button variant="primary" type="submit">Agregar</Button>
                 </Form>
             </Row>
         </Container>
