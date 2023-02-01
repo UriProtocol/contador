@@ -1,4 +1,4 @@
- import { useState } from "react"
+ import { useEffect, useRef, useState } from "react"
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -15,6 +15,13 @@ const Cartas = () =>{
         'direccion': '',
         'telefono': ''
     }
+
+    useEffect(() =>{
+        btnActual.current.className = "display-none"
+    }, [])
+
+    const btnActual = useRef(null)
+
     const [datos, setDatos] = useState(initialState)
     const {nombre, direccion, telefono} = datos
     const [informacion, setInformacion] = useState([])
@@ -40,12 +47,17 @@ const Cartas = () =>{
         // console.log(datos)
     }
     const handleModificar = e =>{
-        const id = e.target.name.slice(1, -1)
-        console.log(id)
+        const id = e.target.name.slice(1)
+        
+        
     }
     const handleEliminar = e =>{
-        const id = e.target.name.slice(1, -1)
-        console.log(id)
+        const id = e.target.name.slice(1)
+        let inf = []
+        for(const info of informacion){
+            if(info.id !== id) inf.push(info)
+        }
+        setInformacion(inf)
     }
 
     return (
@@ -83,7 +95,9 @@ const Cartas = () =>{
                         <Form.Label>Ingresa tu telefono: </Form.Label>
                         <Form.Control type="tel" placeholder="Ingresa tu telefono" name="telefono" value={telefono} onChange={handleChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit">Agregar</Button>
+                    <Button variant="primary" type="submit" name="btnAgregar" >Agregar</Button>
+                    <Button variant="info" type="submit" name="btnActualizar" ref={btnActual} >Actualizar</Button>
+
                 </Form>
             </Row>
         </Container>
