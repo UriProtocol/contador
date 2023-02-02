@@ -1,4 +1,4 @@
- import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -16,15 +16,17 @@ const Cartas = () =>{
         'telefono': ''
     }
 
-    useEffect(() =>{
-        btnActual.current.className = "display-none"
-    }, [])
+    // useEffect(() =>{
+    //     btnActual.current.className = "display-none"
+    // }, [])
 
     const btnActual = useRef(null)
 
     const [datos, setDatos] = useState(initialState)
-    const {nombre, direccion, telefono} = datos
+    const {nombre, direccion, telefono, id} = datos
     const [informacion, setInformacion] = useState([])
+    //Variable de estado para que aparezca el botón de actualizar
+    const[isActive, setIsActive] = useState(false)
 
     const handleSubmit = event =>{
         event.preventDefault()
@@ -48,9 +50,32 @@ const Cartas = () =>{
     }
     const handleModificar = e =>{
         const id = e.target.name.slice(1)
-        
-        
+        //Toggle para que aparezca el botón de modificar
+        setIsActive(true)
+
+        for(const info of informacion){
+            if(info.id === id) setDatos(info) 
+        }
     }
+
+    const handleActualizar = e =>{
+        const id = datos.id
+        let inf = informacion
+        const index = inf.findIndex(i => i.id == id)
+        const modifiedState = {
+            'id': datos.id,
+            'nombre': datos.nombre,
+            'direccion': datos.direccion,
+            'telefono': datos.telefono
+        }
+        inf[index] = modifiedState
+        setInformacion(inf)
+        setDatos(initialState)
+
+        setIsActive(false)
+
+    }
+
     const handleEliminar = e =>{
         const id = e.target.name.slice(1)
         let inf = []
@@ -62,11 +87,11 @@ const Cartas = () =>{
 
     return (
         <Container>
-            <Row className="row-cols-3">
+            <Row className="row-cols-3 justify-content-center">
                 {
                     informacion.map(inf => (
-                        <Col key={inf.id} className="mt-4">
-                            <Card style={{ width: '18rem' }} >
+                        <Col key={inf.id} className="mt-5">
+                            <Card style={{ width: '18rem', marginInline: 'auto' }} >
                                 <Card.Body>
                                     <Card.Title>{inf.nombre}</Card.Title>
                                     <Card.Text>ID: {inf.id}</Card.Text>
@@ -74,14 +99,13 @@ const Cartas = () =>{
                                     <Card.Text>Teléfono: {inf.telefono}</Card.Text>
                                     <Button name={'m' + inf.id} variant="info" className="me-2" onClick={handleModificar}>Modificar</Button>
                                     <Button name={'e' + inf.id} variant="danger" className="ms-2" onClick={handleEliminar}>Eliminar</Button>
-
                                 </Card.Body>
                             </Card>
                         </Col> ))
                 }
             </Row>
 
-            <Row className="form-wrapper">
+            <Row className="form-wrapper mt-5">
                 <Form onSubmit={ handleSubmit }>
                     <Form.Group className="mb-3" controlId="nombre">
                         <Form.Label>Ingresa tu nombre: </Form.Label>
@@ -95,9 +119,8 @@ const Cartas = () =>{
                         <Form.Label>Ingresa tu telefono: </Form.Label>
                         <Form.Control type="tel" placeholder="Ingresa tu telefono" name="telefono" value={telefono} onChange={handleChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" name="btnAgregar" >Agregar</Button>
-                    <Button variant="info" type="submit" name="btnActualizar" ref={btnActual} >Actualizar</Button>
-
+                    <Button variant="primary" type="submit" name="btnAgregar" className="mb-5 mt-3">Agregar</Button>
+                    <Button variant="info" name={id} className={isActive ? 'ms-3 mb-5 mt-3' : 'display-none'} onClick={handleActualizar}>Actualizar</Button>
                 </Form>
             </Row>
         </Container>
