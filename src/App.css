@@ -52,6 +52,53 @@ input{
   }
 }
 
+.desaparecer-modificar{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease; 
+}
+.btnModificar{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  translate: -3rem 0;
+  transition: 0.3s ease;
+  margin: 1rem 0 3rem 0;
+}
+.btnAgregar{
+  margin: 1rem 0 3rem 0;
+  transition: 0.3s ease;
+  pointer-events: all;
+}
+.activo-modificar{
+  opacity: 1;
+  translate: -1rem 0;
+  pointer-events: all;
+  transition: 0.3s ease;
+}
+.inactivo-agregar{
+  translate: -3rem 0;
+  filter: saturate(0.2);
+  pointer-events: none !important;
+}
+
+.carta{
+  animation: aparecer 0.6s ease forwards;
+}
+
+@keyframes aparecer {
+  0%{
+    opacity: 0;
+    translate: 0 2rem;
+  }
+
+  100%{
+    opacity: 1;
+    translate: 0;
+  }
+}
+
 .display-none{
   display: none;
 }

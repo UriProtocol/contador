@@ -20,7 +20,7 @@ const Cartas = () =>{
     //     btnActual.current.className = "display-none"
     // }, [])
 
-    const btnActual = useRef(null)
+    // const btnActual = useRef(null)
 
     const [datos, setDatos] = useState(initialState)
     const {nombre, direccion, telefono, id} = datos
@@ -71,9 +71,7 @@ const Cartas = () =>{
         inf[index] = modifiedState
         setInformacion(inf)
         setDatos(initialState)
-
         setIsActive(false)
-
     }
 
     const handleEliminar = e =>{
@@ -83,6 +81,7 @@ const Cartas = () =>{
             if(info.id !== id) inf.push(info)
         }
         setInformacion(inf)
+        setIsActive(false)
     }
 
     return (
@@ -91,7 +90,7 @@ const Cartas = () =>{
                 {
                     informacion.map(inf => (
                         <Col key={inf.id} className="mt-5">
-                            <Card style={{ width: '18rem', marginInline: 'auto' }} >
+                            <Card style={{ width: '18rem', marginInline: 'auto' }} className='carta'>
                                 <Card.Body>
                                     <Card.Title>{inf.nombre}</Card.Title>
                                     <Card.Text>ID: {inf.id}</Card.Text>
@@ -119,8 +118,8 @@ const Cartas = () =>{
                         <Form.Label>Ingresa tu telefono: </Form.Label>
                         <Form.Control type="tel" placeholder="Ingresa tu telefono" name="telefono" value={telefono} onChange={handleChange}/>
                     </Form.Group>
-                    <Button variant="primary" type="submit" name="btnAgregar" className="mb-5 mt-3">Agregar</Button>
-                    <Button variant="info" name={id} className={isActive ? 'ms-3 mb-5 mt-3' : 'display-none'} onClick={handleActualizar}>Actualizar</Button>
+                    <Button variant="primary" type="submit" name="btnAgregar" className={isActive ? 'btnAgregar inactivo-agregar' : 'btnAgregar'} >Agregar</Button>
+                    <Button variant="info" name={id} className={isActive ? 'btnModificar activo-modificar' : 'btnModificar'} onClick={handleActualizar}>Actualizar</Button>
                 </Form>
             </Row>
         </Container>
